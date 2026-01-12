@@ -67,7 +67,11 @@
             },
             "development": {
               "buildTarget": "demo:build:development"
+            },
+            "test": {
+              "buildTarget": "demo:build:test"
             }
+
           },
           "defaultConfiguration": "development"
         },

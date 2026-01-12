@@ -8,7 +8,9 @@ import {   FilteredPayload, VPIDataItem } from '../interfaces/vpi-interface';
 export class DataService {
 public pagedDataSignal = signal<VPIDataItem[]>([]);
 public totalRecordsSignal = signal(0);
-
+public loadingTableDataSignal = signal<boolean>(false);
+public successToasterSignal = signal<boolean>(true);
+public vpiDataSignal = signal<VPIDataItem[]>([]);        
 
 private payloadSignal = signal<FilteredPayload>({
   filters: {},
@@ -20,25 +22,20 @@ private payloadSignal = signal<FilteredPayload>({
 
   public payload = this.payloadSignal;
 
-  getPayload() {
+  public getPayload() {
     return this.payloadSignal();
   }
 
-  setPayload(payload: FilteredPayload) { 
-    this.payloadSignal.set(payload);
+  public setPayload(payload: FilteredPayload) { 
+     this.payloadSignal.set(payload);
   }
 
-  getTotalRecords() {
+  public getTotalRecords() {
     return this.totalRecordsSignal();
   }
 
-  setTotalRecords(count: number) {
+  public setTotalRecords(count: number) {
     this.totalRecordsSignal.set(count);
   }
-  public loadingTableDataSignal = signal<boolean>(false);
-   public successToasterSignal = signal<boolean>(true);
-   public vpiDataSignal = signal<VPIDataItem[]>([]);  
-
-
 }
  

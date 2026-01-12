@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu'
 import { MsalService } from '@azure/msal-angular';
+import { DataService } from 'services/data.service';
 
 interface OPCODES {
   name: string;
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
   public title = "demo";
   public msalService = inject(MsalService);
   public router = inject(Router);
+  public _dataService = inject(DataService);
   public items: MenuItem[] | undefined;
   public opCodes: OPCODES[] | undefined;
   public container: OPCODES[] | undefined;
@@ -43,10 +45,13 @@ export class AppComponent implements OnInit {
   public opCode: { name: string; code: string } | null = null;
 
   public ngOnInit() {
-    const account = this.msalService.instance.getActiveAccount();
-    if (!account && this.msalService.instance.getAllAccounts().length > 0) {
-      this.msalService.instance.setActiveAccount(this.msalService.instance.getAllAccounts()[0]);
-    }
+  //  const account = this.msalService.instance.getActiveAccount();
+  //   if (!account) {
+  //   const allAccounts = this.msalService.instance.getAllAccounts();
+  //    if (allAccounts.length > 0) {
+  //      this.msalService.instance.setActiveAccount(allAccounts[0]);
+  //   }
+  // }
     this.updateUserMenu();
     this.opCodes = [
       { name: 'RGE', code: 'RGE' },
@@ -71,6 +76,8 @@ export class AppComponent implements OnInit {
         label: '<img src="assets/vpi.png" alt="VPI"  > VPI',
         command: () => {
           this.router.navigate(['/vpi']);
+           this._dataService.pagedDataSignal.set([]);
+
         }
       },
       {
@@ -85,19 +92,29 @@ export class AppComponent implements OnInit {
 
 
   public navigateHomePage(): void {
+    this._dataService.setPayload({});
     this.router.navigate(['/home']);
   }
 
   public updateUserMenu(): void {
-    const account = this.msalService.instance.getActiveAccount();
-
-    const username = account?.name || account?.username || 'Guest';
-
-    this.userMenu = [
-      { label: username },
-      { label: 'Logout', command: () => this.logout() }
-    ];
+   let account = this.msalService.instance.getActiveAccount();
+    if (!account) {
+    const allAccounts = this.msalService.instance.getAllAccounts();
+       
+     if (allAccounts.length > 0) {
+      account = allAccounts[0];
+       this.msalService.instance.setActiveAccount(account);
+    }
   }
+
+  const username = account?.name || account?.username || 'Guest';
+   this.userMenu = [
+    { label: username },
+    { label: 'Logout', command: () => this.logout() }
+  ];
+ 
+  }
+
 
   public logout(): void {
     this.msalService.logoutRedirect();

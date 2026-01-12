@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './vpi-dashboard.component.html',
   styleUrl: './vpi-dashboard.component.scss',
   standalone: true,
-  imports: [  CardModule, CommonModule, ButtonModule]
+  imports: [ CardModule, CommonModule, ButtonModule]
 })
 export class VpiDashboardComponent {
 }

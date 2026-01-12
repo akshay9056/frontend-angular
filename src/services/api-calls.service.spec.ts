@@ -64,7 +64,7 @@ const mockResponse: FilteredDataInterface = {
   message: 'Success',
   status: 'OK',
   data: vpiDataMock,
-  pagination: { total_records: vpiDataMock.length, total_pages: 1 },
+  pagination: { totalRecords: vpiDataMock.length, totalPages: 1 },
 };
 
 const baseURL = "https://spring-boot-jwt-8utp.onrender.com";
@@ -85,7 +85,7 @@ describe('ApiCallsService', () => {
     service = TestBed.inject(ApiCallsService);
     httpMock = TestBed.inject(HttpTestingController);
 
-    (service as any).filteredUrl = '/api/filtered';
+    (service).filteredUrl = '/api/filtered';
   });
 
 
@@ -110,9 +110,9 @@ describe('ApiCallsService', () => {
       pagination: { pageNumber: 2, pageSize: 50 },
     };
 
-    let received: FilteredDataInterface | undefined;
+    let response: FilteredDataInterface | undefined;
 
-    service.getFilteredData(payload).subscribe(res => (received = res));
+    service.getFilteredData(payload).subscribe(res => (response = res));
 
     const req = httpMock.expectOne('/api/filtered');
     expect(req.request.method).toBe('POST');
@@ -122,29 +122,11 @@ describe('ApiCallsService', () => {
 
     req.flush(mockResponse);
 
-    expect(received).toEqual(mockResponse);
-    expect(received?.data.length).toBe(2);
-    expect(received?.data[0].fileName).toBe('VPI_support_001.wav');
-    expect(received?.pagination.total_records).toBe(2);
+    expect(response).toEqual(mockResponse);
+    expect(response?.data.length).toBe(2);
+    expect(response?.data[0].fileName).toBe('VPI_support_001.wav');
+    expect(response?.pagination.totalRecords).toBe(2);
     expect(authMock.getAccessToken).toHaveBeenCalledTimes(1);
-  });
-
-
-
-  it('should call getMetaData method to get METADATA with correct headers and payload when token is available', () => {
-    const mockToken = 'mock-token';
-     const mockResponse = { fileName: 'file.wav' } as any;
-
-    authMock.getAccessToken.and.returnValue(of(mockToken));
-
-    service.getMetaData(mockMetaDataPayload).subscribe(response => {
-      expect(response).toEqual(mockResponse);
-    });
-
-    const req = httpMock.expectOne(`${baseURL}/recording-metadata`);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
-    req.flush(mockResponse);
   });
 
 

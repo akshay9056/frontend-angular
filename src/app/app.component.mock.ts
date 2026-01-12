@@ -110,8 +110,8 @@ export const mockFilteredData: FilteredDataInterface = {
     }
   ],
   pagination: {
-    total_records: 2,
-    total_pages: 1
+    totalRecords: 2,
+    totalPages: 1
   }
 };
 
@@ -122,8 +122,8 @@ export const mockFilteredDataError: FilteredDataInterface = {
   status: 'error',
   data: [],
   pagination: {
-    total_records: 0,
-    total_pages: 0
+    totalRecords: 0,
+    totalPages: 0
   }
 };
 

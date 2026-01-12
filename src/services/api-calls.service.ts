@@ -3,17 +3,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, switchMap } from 'rxjs';
 import { FilteredDataInterface, FilteredPayload, MetaDataPayload, VPIDataItem } from '../interfaces/vpi-interface';
 import { AuthService } from './auth.service';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiCallsService {
   public apiResponse = '';
-  public api = "https://spring-boot-jwt-8utp.onrender.com";
-  private filteredUrl = this.api + `/fetch-metadata`;
-  private recordingUrl = this.api + `/recording`;
-  private recordingMetaDataUrl = this.api + `/recording-metadata`;
-  private downloadRecordingsUrl = this.api + `/download-recordings`;
+  // private readonly baseUrl = 'https://spring-boot-jwt-8utp.onrender.com';
+  // public filteredUrl = this.baseUrl + `/fetch-metadata`;
+  // private recordingUrl = this.baseUrl + `/recording`;
+  // private recordingMetaDataUrl = this.baseUrl + `/recording-metadata`;
+  // private downloadRecordingsUrl = this.baseUrl + `/download-recordings`;
   private http = inject(HttpClient);
   private auth = inject(AuthService);
 
@@ -25,7 +26,7 @@ export class ApiCallsService {
           'Authorization': `Bearer ${token}`
         });
 
-        return this.http.post<FilteredDataInterface>(this.filteredUrl, payload, { headers });
+        return this.http.post<FilteredDataInterface>(`${environment.apiBaseUrl}/fetch-metadata`, payload, { headers });
       })
     );
   }
@@ -39,7 +40,7 @@ export class ApiCallsService {
           'Authorization': `Bearer ${token}`
         });
 
-        return this.http.post<VPIDataItem>(this.recordingMetaDataUrl, payload, { headers });
+        return this.http.post<VPIDataItem>(`${environment.apiBaseUrl}/recording-metadata`, payload, { headers });
       })
     );
   }
@@ -53,7 +54,7 @@ export class ApiCallsService {
           'Authorization': `Bearer ${token}`
         });
 
-        return this.http.post(this.recordingUrl, payload, { headers, responseType: 'blob' });
+        return this.http.post(`${environment.apiBaseUrl}/recording`, payload, { headers, responseType: 'blob' });
       })
     );
 
@@ -67,7 +68,7 @@ export class ApiCallsService {
           'Authorization': `Bearer ${token}`
         });
 
-        return this.http.post(this.downloadRecordingsUrl, payload, {
+        return this.http.post(`${environment.apiBaseUrl}/download-recordings`, payload, {
           headers,
           responseType: 'blob'
         });

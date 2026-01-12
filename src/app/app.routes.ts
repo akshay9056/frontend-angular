@@ -7,4 +7,4 @@ export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'vpi', component: VpiTableComponent },
   { path: 'home', component: VpiDashboardComponent, canActivate: [MsalGuard] },
-];
+ ];

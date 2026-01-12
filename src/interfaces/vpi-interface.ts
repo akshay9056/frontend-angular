@@ -3,8 +3,8 @@ export interface FilteredDataInterface {
   status: string;
   data: VPIDataItem[];
   pagination: {
-    total_records: number;
-    total_pages: number;
+    totalRecords: number;
+    totalPages: number;
   };
 }
 
@@ -31,8 +31,8 @@ export interface VPIDataItem {
 }
 
 export interface Pagination {
-  total_records: number;
-  total_pages: number;
+  totalRecords: number;
+  totalPages: number;
   pageNumber: number;
   pageSize: number;
 }

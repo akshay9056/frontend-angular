@@ -23,7 +23,6 @@ import {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
-
     ...msalProviders,
     {
       provide: MSAL_GUARD_CONFIG,
